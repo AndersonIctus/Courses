@@ -14,3 +14,4 @@ namespace Alura.Loja.Testes.ConsoleApp
         public Produto Produto { get; set; }
     }
 }
+
