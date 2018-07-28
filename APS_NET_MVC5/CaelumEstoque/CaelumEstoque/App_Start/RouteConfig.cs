@@ -11,6 +11,8 @@ namespace CaelumEstoque
     {
         public static void RegisterRoutes(RouteCollection routes)
         {
+            routes.MapMvcAttributeRoutes(); //ativa o uso de rotas customizadas (Anotação Route nas Actions)
+
             routes.IgnoreRoute("{resource}.axd/{*pathInfo}");
 
             routes.MapRoute(

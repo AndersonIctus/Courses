@@ -1,4 +1,5 @@
 ﻿using CaelumEstoque.DAO;
+using CaelumEstoque.Filtros;
 using CaelumEstoque.Models;
 using System;
 using System.Collections.Generic;
@@ -8,9 +9,11 @@ using System.Web.Mvc;
 
 namespace CaelumEstoque.Controllers
 {
+    [AutorizacaoFilter]
     public class ProdutoController : Controller
     {
         // GET: Produto
+        [Route("produtos", Name ="ListaProdutos")]
         public ActionResult Index()
         {
             return View( new ProdutosDAO().Lista() );
@@ -24,6 +27,7 @@ namespace CaelumEstoque.Controllers
         }
 
         [HttpPost]
+        [ValidateAntiForgeryToken]
         public ActionResult Adiciona(Produto produto)
         {
             int catInformatica = 1;
@@ -47,10 +51,24 @@ namespace CaelumEstoque.Controllers
             }
         }
 
+        [Route("produtos/{id}", Name ="VisualizaProduto")]
         public ActionResult Visualiza(int id)
         {
             ViewBag.Produto = new ProdutosDAO().BuscaPorId(id);
             return View();
+        }
+
+        public ActionResult DecrementaQtd(int id)
+        {
+            ProdutosDAO dao = new ProdutosDAO();
+
+            Produto produto = dao.BuscaPorId(id);
+            produto.Quantidade--;
+
+            dao.Atualiza(produto);
+
+            //return RedirectToAction("Index");
+            return Json(produto);
         }
     }
 }
